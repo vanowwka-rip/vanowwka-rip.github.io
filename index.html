@@ -1,1 +1,242 @@
-carter here
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MELLSTROY GAME EXTRA ULTRA CASINO 777</title>
+    <style>
+        * { box-sizing: border-box; user-select: none; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Impact', 'Arial Black', sans-serif; background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff0000); background-size: 400% 400%; animation: rainbowBg 0.15s linear infinite; }
+        @keyframes rainbowBg { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        /* Заморозка анимаций и черно-белый режим */
+        .frozen { animation-play-state: paused !important; filter: grayscale(100%) !important; }
+        .frozen * { animation-play-state: paused !important; }
+
+        /* Начальный экран Click to Enter */
+        #click-to-enter { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; text-align: center; }
+        .enter-title { color: #00ff00; font-size: 5rem; text-transform: uppercase; text-shadow: 0 0 20px #00ff00, 0 0 40px #ff0000; animation: shake 0.05s infinite; }
+        .enter-sub { color: #ffff00; font-size: 3rem; margin-top: 30px; animation: blink 0.1s infinite; }
+
+        /* Основной интерфейс (дизайн V2) */
+        .wrapper { display: flex; width: 100%; height: 100%; position: relative; }
+        .banner { width: 20%; height: 100%; background: rgba(0,0,0,0.85); border: 5px solid #ff00ff; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 10px; z-index: 10; box-shadow: 0 0 30px #ff00ff; }
+        .banner-text { color: #fff; text-align: center; font-size: 1.8rem; text-transform: uppercase; text-shadow: 0 0 10px #ff0000; animation: blink 0.2s infinite alternate; }
+        .banner-img { width: 90%; border: 4px dashed #ffff00; animation: spin 0.5s linear infinite; }
+        
+        .main-casino { width: 60%; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 20px; position: relative; }
+        .ticker { width: 100%; background: #000; border: 4px solid #00ffff; color: #ffff00; font-size: 2rem; white-space: nowrap; overflow: hidden; box-shadow: 0 0 20px #00ffff; }
+        .ticker p { display: inline-block; padding-left: 100%; animation: tickerAnimation 5s linear infinite; margin: 5px 0; }
+        @keyframes tickerAnimation { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+
+        .jackpot-container { background: #000; border: 6px double #ff0000; padding: 10px 30px; text-align: center; box-shadow: 0 0 40px #ff0000; animation: shake 0.1s infinite; }
+        .jackpot-amount { color: #00ff00; font-size: 3.5rem; text-shadow: 0 0 15px #00ff00; }
+
+        /* Игровой автомат */
+        .slot-machine { background: rgba(0, 0, 0, 0.9); border: 10px solid #ffff00; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 0 50px #ffff00; }
+        .slots-row { display: flex; gap: 15px; margin-bottom: 20px; }
+        .slot-box { width: 130px; height: 130px; background: #222; border: 5px solid #00ff00; border-radius: 10px; display: flex; justify-content: center; align-items: center; overflow: hidden; font-size: 4rem; }
+        .slot-box img { width: 90%; height: 90%; object-fit: contain; }
+
+        /* Кнопки */
+        .btn-spin { background: linear-gradient(#ffcc00, #ff3300); color: #fff; font-size: 2.5rem; padding: 15px 40px; border: 4px solid #fff; border-radius: 50px; cursor: pointer; text-transform: uppercase; text-shadow: 2px 2px #000; box-shadow: 0 10px 0 #990000; }
+        .btn-spin:active { transform: translateY(8px); box-shadow: 0 2px 0 #990000; }
+        
+        .btn-withdraw { background: linear-gradient(#00ff00, #008800); color: #fff; font-size: 1.8rem; padding: 10px 30px; border: 3px solid #fff; border-radius: 10px; cursor: pointer; text-transform: uppercase; margin-top: 15px; box-shadow: 0 5px 0 #004400; width: 100%; text-shadow: 1px 1px #000; text-align: center; }
+        .btn-withdraw:active { transform: translateY(4px); box-shadow: 0 1px 0 #004400; }
+
+        /* Всплывающий экран отмены вывода */
+        #no-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000; justify-content: center; align-items: center; background: rgba(0,0,0,0.2); }
+        .no-text { color: #ff0000; font-size: 18rem; text-transform: uppercase; font-weight: 900; text-shadow: 0 0 50px #000, 0 0 20px #ff0000; animation: extremePulse 0.1s infinite alternate; }
+
+        /* Окно выигрыша */
+        #win-popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 650px; background: #111; border: 15px double #ff00ff; z-index: 1000; text-align: center; padding: 30px; box-shadow: 0 0 100px #ff00ff; }
+        .win-title { color: #ffff00; font-size: 3.5rem; text-shadow: 0 0 20px #ff0000; }
+        .win-amount { color: #00ff00; font-size: 5rem; text-shadow: 0 0 30px #00ff00; margin: 20px 0; }
+        .win-img { width: 220px; height: 220px; border-radius: 50%; border: 8px solid #00ffff; }
+
+        .flying-item { position: absolute; font-size: 3rem; pointer-events: none; z-index: 5; }
+
+        @keyframes blink { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes extremePulse { 0% { transform: scale(1); } 100% { transform: scale(1.2); } }
+        @keyframes shake {
+            0%, 100% { transform: translate(2px, 1px) rotate(0deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+        }
+        .extreme-shake { animation: extremeShake 0.05s infinite !important; }
+        @keyframes extremeShake {
+            0%, 100% { transform: translate(10px, 10px) rotate(3deg); filter: invert(0); }
+            50% { transform: translate(-15px, 8px) rotate(-5deg); filter: invert(1); }
+        }
+        .spin-anim { animation: spinFast 0.05s linear infinite; }
+        @keyframes spinFast { 0% { transform: translateY(-50px); } 100% { transform: translateY(50px); } }
+    </style>
+</head>
+<body id="body-root">
+
+    <!-- Экран клик ту энтер -->
+    <div id="click-to-enter" onclick="startGame()">
+        <div class="enter-title">MELLSTROY GAME</div>
+        <div class="enter-sub">💥 НАЖМИ ЧТОБЫ ДЕПНУТЬ СВОЮ ХАТУ 💥</div>
+    </div>
+
+    <!-- Текст-заглушка вывода средств -->
+    <div id="no-overlay"><div class="no-text">НЕТ.</div></div>
+
+    <!-- Аудио дорожки -->
+    <audio id="bg-music" src="https://www.myinstants.com/media/sounds/veselaia-pesenka-mellstroy-x-benny-hill-mashup.mp3" loop></audio>
+    <audio id="spin-sound" src="https://www.myinstants.com/media/sounds/roulette-casino.mp3"></audio>
+    <audio id="win-voice" src="https://www.myinstants.com/media/sounds/mellstroi-oriot-ia-khz-chio-siuda-dobavit.mp3"></audio>
+    <audio id="win-horn" src="https://www.myinstants.com/media/sounds/dj-airhorn-sound-effect-kingbeatz_1.mp3"></audio>
+
+    <div class="wrapper" id="main-content">
+        <!-- Левый баннер -->
+        <div class="banner">
+            <div class="banner-text">БОНУС +500000% К ДЕПОЗИТУ</div>
+            <img class="banner-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo7gy-idWw5k9DSVQ81IDB25UUe0V2M8qC7DKvD806R7LQV7Kc-e02sew&s=10">
+            <div class="banner-text">МЕЛЛСТРОЙ ДАРИТ БАБКИ!</div>
+        </div>
+
+        <!-- Центральная панель казино -->
+        <div class="main-casino">
+            <div class="ticker">
+                <p>!!! ВНИМАНИЕ !!! ТЫ НА САЙТЕ ЛУЧШЕГО КАЗИНО В МИРЕ !!! КРУТИ И ВЫИГРЫВАЙ !!! МЕЛЛСТРОЙ ОТДАЕТ ПОСЛЕДНЕЕ !!! ЗАБЕРИ СВОЙ ДЖЕКПОТ ПРЯМО СЕЙЧАС !!!</p>
+            </div>
+
+            <div class="jackpot-container">
+                <div class="jackpot-amount" id="jackpot-counter">999,999,999,999.67 руб.</div>
+            </div>
+
+            <div class="slot-machine">
+                <div class="slots-row">
+                    <div class="slot-box" id="box1"><img id="slot1" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo7gy-idWw5k9DSVQ81IDB25UUe0V2M8qC7DKvD806R7LQV7Kc-e02sew&s=10"></div>
+                    <div class="slot-box" id="box2"><img id="slot2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo7gy-idWw5k9DSVQ81IDB25UUe0V2M8qC7DKvD806R7LQV7Kc-e02sew&s=10"></div>
+                    <div class="slot-box" id="box3"><img id="slot3" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo7gy-idWw5k9DSVQ81IDB25UUe0V2M8qC7DKvD806R7LQV7Kc-e02sew&s=10"></div>
+                </div>
+                <button class="btn-spin" onclick="spinSlots()">КРУТИТЬ ХАЛЯВУ!!!</button>
+                <button class="btn-withdraw" onclick="triggerWithdrawDenial()">ВЫВОД СРЕДСТВ</button>
+            </div>
+            <div></div>
+        </div>
+
+        <!-- Правый баннер -->
+        <div class="banner">
+            <div class="banner-text">ВЫИГРЫШ 100% БЕЗ ОБМАНА</div>
+            <img class="banner-img" style="animation-direction: reverse;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo7gy-idWw5k9DSVQ81IDB25UUe0V2M8qC7DKvD806R7LQV7Kc-e02sew&s=10">
+            <div class="banner-text">КРУТИ ПОДНЯТЬ БАБЛО</div>
+        </div>
+    </div>
+
+    <!-- Модальное окно победы -->
+    <div id="win-popup">
+        <h1 class="win-title">🎉🎉🎉 ВЫ ВЫЙГРАЛИ!!!! 🎉🎉🎉</h1>
+        <img class="win-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo7gy-idWw5k9DSVQ81IDB25UUe0V2M8qC7DKvD806R7LQV7Kc-e02sew&s=10" id="popup-avatar">
+        <div class="win-amount">67 РУБЛЕЙ!!!!</div>
+        <p style="color: #ff00ff; font-size: 1.5rem; text-transform: uppercase;">Меллстрой отправит лично на карту (нет)</p>
+        <button class="btn-spin" style="font-size: 1.5rem; padding: 10px 20px; margin-top: 20px;" onclick="closePopup()">ХАРОШ!! ХОЧУ ЕЩЕ!</button>
+    </div>
+
+    <script>
+        const imgUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo7gy-idWw5k9DSVQ81IDB25UUe0V2M8qC7DKvD806R7LQV7Kc-e02sew&s=10";
+        const altImgs = ["🚜", "🤡", "🍋", "💰", "🎰"];
+        let bgMusic = document.getElementById('bg-music');
+        let spinSound = document.getElementById('spin-sound');
+        let winVoice = document.getElementById('win-voice');
+        let winHorn = document.getElementById('win-horn');
+        let isSpinning = false, isFrozen = false, garbageInterval;
+
+        function startGame() {
+            document.getElementById('click-to-enter').style.display = 'none';
+            bgMusic.volume = 0.4;
+            bgMusic.play().catch(e => console.log(e));
+            
+            setInterval(() => {
+                if (isFrozen) return;
+                let current = 999999999999.67 + Math.random() * 100000;
+                document.getElementById('jackpot-counter').innerText = current.toLocaleString('ru-RU', {minimumFractionDigits: 2}) + " руб.";
+            }, 100);
+        }
+
+        function spinSlots() {
+            if (isSpinning || isFrozen) return;
+            isSpinning = true;
+            closePopup();
+
+            spinSound.currentTime = 0; spinSound.play();
+            let b1 = document.getElementById('box1'), b2 = document.getElementById('box2'), b3 = document.getElementById('box3');
+
+            let spinTimer = setInterval(() => {
+                if (isFrozen) return;
+                b1.innerHTML = altImgs[Math.floor(Math.random() * altImgs.length)];
+                b2.innerHTML = altImgs[Math.floor(Math.random() * altImgs.length)];
+                b3.innerHTML = altImgs[Math.floor(Math.random() * altImgs.length)];
+            }, 50);
+
+            garbageInterval = setInterval(spawnGarbage, 80);
+
+            setTimeout(() => {
+                if (isFrozen) { clearInterval(spinTimer); isSpinning = false; return; }
+                clearInterval(spinTimer); spinSound.pause();
+                b1.innerHTML = `<img id="slot1" src="${imgUrl}">`;
+                b2.innerHTML = `<img id="slot2" src="${imgUrl}">`;
+                b3.innerHTML = `<img id="slot3" src="${imgUrl}">`;
+
+                winVoice.currentTime = 0; winVoice.play();
+                winHorn.currentTime = 0; winHorn.play();
+
+                document.getElementById('main-content').classList.add('extreme-shake');
+                let popup = document.getElementById('win-popup');
+                popup.style.display = 'block';
+                document.getElementById('popup-avatar').classList.add('spin-anim');
+                isSpinning = false;
+            }, 2500);
+        }
+
+        function triggerWithdrawDenial() {
+            if (isFrozen) return;
+            isFrozen = true;
+
+            document.getElementById('body-root').classList.add('frozen');
+            document.getElementById('main-content').classList.add('frozen');
+            document.getElementById('win-popup').classList.add('frozen');
+            bgMusic.pause(); spinSound.pause(); winVoice.pause(); winHorn.pause();
+
+            let overlay = document.getElementById('no-overlay');
+            overlay.style.display = 'flex';
+
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                document.getElementById('body-root').classList.remove('frozen');
+                document.getElementById('main-content').classList.remove('frozen');
+                document.getElementById('win-popup').classList.remove('frozen');
+                bgMusic.play().catch(e => console.log(e));
+                isFrozen = false;
+            }, 2000);
+        }
+
+        function closePopup() {
+            document.getElementById('win-popup').style.display = 'none';
+            document.getElementById('main-content').classList.remove('extreme-shake');
+            document.getElementById('popup-avatar').classList.remove('spin-anim');
+            clearInterval(garbageInterval);
+        }
+
+        function spawnGarbage() {
+            if (isFrozen) return;
+            const items = ["🚜", "🤡", "💎", "🎰", "💰", "💵", "🍋", "🔥"];
+            let div = document.createElement('div');
+            div.className = 'flying-item';
+            div.innerText = items[Math.floor(Math.random() * items.length)];
+            div.style.left = Math.random() * window.innerWidth + 'px';
+            div.style.top = Math.random() * window.innerHeight + 'px';
+            div.style.transform = `rotate(${Math.random() * 360}deg) scale(${0.5 + Math.random() * 1.5})`;
+            document.body.appendChild(div);
+            setTimeout(() => { div.remove(); }, 1000);
+        }
+    </script>
+</body>
+</html>
