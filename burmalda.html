@@ -1,49 +1,53 @@
-<p>(function() {
-    const imageUrl = 'https://cdn-image.zvuk.com/pic?hash=f309bc50-bbd9-4faf-a3f8-4ebd09678625&id=50490552&size=medium&type=release';
-    const newText = 'бурмалда';
+<div style="white-space: pre-line;">
+    (function() {
+        const imageUrl = 'https://cdn-image.zvuk.com/pic?hash=f309bc50-bbd9-4faf-a3f8-4ebd09678625&id=50490552&size=medium&type=release';
+        const newText = 'бурмалда';
+    
+        // 1. Заменяем обычные и адаптивные теги картинок
+        document.querySelectorAll('img').forEach(img => {
+            img.src = imageUrl;
+            if (img.srcset) img.srcset = imageUrl;
+        });
+        document.querySelectorAll('picture source').forEach(source => {
+            if (source.srcset) source.srcset = imageUrl;
+        });
 
+        // 2. Устанавливаем картинку на фон и меняем текстовые узлы
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach(el => {
+            // Добавляем фон
+            el.style.backgroundImage = `url('${imageUrl}')`;
+            el.style.backgroundSize = 'cover';
+            el.style.backgroundPosition = 'center';
+            el.style.backgroundRepeat = 'no-repeat';
 
-    document.querySelectorAll('img').forEach(img => {
-        img.src = imageUrl;
-        if (img.srcset) img.srcset = imageUrl;
-    });
-    document.querySelectorAll('picture source').forEach(source => {
-        if (source.srcset) source.srcset = imageUrl;
-    });
-
-    const allElements = document.querySelectorAll('*');
-    allElements.forEach(el => {
-
-        el.style.backgroundImage = `url('${imageUrl}')`;
-        el.style.backgroundSize = 'cover';
-        el.style.backgroundPosition = 'center';
-        el.style.backgroundRepeat = 'no-repeat';
-
-
-        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-            if (el.placeholder) el.placeholder = newText;
-            if (el.value && el.type !== 'submit') el.value = newText;
-        }
-    });
-
-    function replaceTextNodes(node) {
-        if (node.nodeType === Node.TEXT_NODE) {
-            // Если в узле есть хоть какой-то текст (не просто пробелы), меняем его
-            if (node.nodeValue.trim().length > 0) {
-                node.nodeValue = newText;
+            // Меняем текст внутри кнопок и полей ввода
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                if (el.placeholder) el.placeholder = newText;
+                if (el.value && el.type !== 'submit') el.value = newText;
             }
-        } else {
-            // Пропускаем теги со скриптами и стилями, чтобы сайт не упал окончательно
-            if (node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
-                for (let i = 0; i < node.childNodes.length; i++) {
-                    replaceTextNodes(node.childNodes[i]);
+        });
+
+        // Функция для безопасной замены чистого текста (чтобы не сломать теги и скрипты)
+        function replaceTextNodes(node) {
+            if (node.nodeType === Node.TEXT_NODE) {
+                // Если в узле есть хоть какой-то текст (не просто пробелы), меняем его
+                if (node.nodeValue.trim().length > 0) {
+                    node.nodeValue = newText;
+                }
+            } else {
+                // Пропускаем теги со скриптами и стилями, чтобы сайт не упал окончательно
+                if (node.nodeName !== 'SCRIPT' && node.nodeName !== 'STYLE') {
+                    for (let i = 0; i < node.childNodes.length; i++) {
+                        replaceTextNodes(node.childNodes[i]);
+                    }
                 }
             }
         }
-    }
 
+        // Запускаем замену текста со всей страницы
+        replaceTextNodes(document.body);
 
-    replaceTextNodes(document.body);
-
-    console.log('script by realfurryclub');
-})();</p>
+        console.log('script made by realfurryclub aka vanowwka');
+    })();
+</div>
